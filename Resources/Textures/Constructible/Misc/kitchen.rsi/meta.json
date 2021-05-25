@@ -2,11 +2,13 @@
   "version":1,
   "size":{"x":32,"y":32},
   "license":"CC-BY-SA-3.0",
-  "copyright":"Taken from https://github.com/discordia-space/CEV-Eris/blob/2b969adc2dfd3e9621bf3597c5cbffeb3ac8c9f0/icons/obj/kitchen.dmi",
+  "copyright":"Taken from https://github.com/discordia-space/CEV-Eris/blob/2b969adc2dfd3e9621bf3597c5cbffeb3ac8c9f0/icons/obj/kitchen.dmi, human from https://github.com/goonstation/goonstation/blob/4c9812518cad42493a7afb541adb4e24ace25b23/icons/misc/evilreaverstation.dmi",
   "states":[
     {"name":"spike","directions":1,"delays":[[1.0]]},
-    {"name":"spikebloody","directions":1,"delays":[[1.0]]},
-    {"name":"spikebloodygreen","directions":1,"delays":[[1.0]]}
+    {"name":"human","directions":1,"delays":[[1.0]]},
+    {"name":"xeno","directions":1,"delays":[[1.0]]},
+    {"name":"monkey","directions":1,"delays":[[1.0]]},
+    {"name":"blood","directions":1,"delays":[[1.0]]}
   ]
 }
 
