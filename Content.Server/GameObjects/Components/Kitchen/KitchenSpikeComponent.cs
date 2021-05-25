@@ -5,6 +5,7 @@ using Content.Server.GameObjects.EntitySystems.DoAfter;
 using Content.Server.Interfaces.Chat;
 using Content.Server.Interfaces.GameObjects;
 using Content.Server.Utility;
+using Content.Shared.GameObjects.Components.Kitchen;
 using Content.Shared.GameObjects.Components.Mobs.State;
 using Content.Shared.GameObjects.Components.Nutrition;
 using Content.Shared.Interfaces;
@@ -55,16 +56,14 @@ namespace Content.Server.GameObjects.Components.Kitchen
             }
             else
             {
-                if (Owner.TryGetComponent(out sprite))
+                if (Owner.TryGetComponent<AppearanceComponent>(out var appearance))
                 {
-                    sprite.LayerSetState(0, "spike");
+                    appearance.SetData(KitchenSpikeVisuals.Body, new KitchenSpikeBodyState(false, ""));
                 }
-
                 eventArgs.User.PopupMessage(_meatSource0);
             }
 
             return;
-
         }
 
         public override bool DragDropOn(DragDropEvent eventArgs)
@@ -105,7 +104,7 @@ namespace Content.Server.GameObjects.Components.Kitchen
             if (!Spikeable(user, victim, out butcherable))
                 return;
 
-            // Prevent dead from being spiked TODO: Maybe remove when rounds can be played and DOT is implemented
+            // Prevent non-dead from being spiked TODO: Maybe remove when rounds can be played and DOT is implemented
             if (victim.TryGetComponent<IMobStateComponent>(out var state) &&
                 !state.IsDead())
             {
@@ -149,10 +148,10 @@ namespace Content.Server.GameObjects.Components.Kitchen
             // But Name is RobustToolbox-level, so presumably it'd have to be done in some other way (interface???)
             _meatName = Loc.GetString("comp-kitchen-spike-meat-name", ("victim", victim));
 
-            // TODO: Visualizer
-            if (Owner.TryGetComponent<SpriteComponent>(out var sprite))
+            if (Owner.TryGetComponent<AppearanceComponent>(out var appearance))
             {
-                sprite.LayerSetState(0, "spikebloody");
+                appearance.SetData(KitchenSpikeVisuals.Blood, true);
+                appearance.SetData(KitchenSpikeVisuals.Body, new KitchenSpikeBodyState(true, "human")); // todo make it actually change
             }
 
             Owner.PopupMessageEveryone(Loc.GetString("comp-kitchen-spike-kill", ("user", user), ("victim", victim)));

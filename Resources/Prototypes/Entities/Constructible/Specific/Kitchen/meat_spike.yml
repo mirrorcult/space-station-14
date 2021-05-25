@@ -7,7 +7,6 @@
   - type: InteractionOutline
   - type: Sprite
     netsync: false
-    # temp to make clickmask work
     sprite: Constructible/Misc/kitchen.rsi
     state: spike
   - type: Damageable
@@ -22,3 +21,6 @@
   - type: KitchenSpike
   - type: Anchorable
   - type: Pullable
+  - type: Appearance
+    visuals:
+    - type: KitchenSpikeVisualizer
