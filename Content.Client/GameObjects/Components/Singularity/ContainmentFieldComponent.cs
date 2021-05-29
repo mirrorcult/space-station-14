@@ -16,11 +16,11 @@ namespace Content.Client.GameObjects.Components.Singularity
 
             if (!Owner.TryGetComponent(out _spriteComponent))
             {
-                Logger.Error("Containmentfieldcomponent created without spritecomponent");
+                Logger.Error("ContainmentfieldComponent created without SpriteComponent");
             }
             else
             {
-                _spriteComponent.Directional = false;
+                _spriteComponent.NoRotation = true;
             }
         }
     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.GameObjects.Components.GUI;
@@ -52,9 +52,6 @@ namespace Content.Server.GameObjects.EntitySystems
         public override void Shutdown()
         {
             base.Shutdown();
-
-            UnsubscribeLocalEvent<EntRemovedFromContainerMessage>();
-            UnsubscribeLocalEvent<EntInsertedIntoContainerMessage>();
 
             CommandBinds.Unregister<HandsSystem>();
         }

@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System;
 using System.Collections.Generic;
 using Content.Server.AI.Utility.Actions;
@@ -43,13 +43,6 @@ namespace Content.Server.GameObjects.EntitySystems.AI
             base.Initialize();
             SubscribeLocalEvent<SleepAiMessage>(HandleAiSleep);
             SubscribeLocalEvent<MobStateChangedMessage>(MobStateChanged);
-        }
-
-        public override void Shutdown()
-        {
-            base.Shutdown();
-            UnsubscribeLocalEvent<SleepAiMessage>();
-            UnsubscribeLocalEvent<MobStateChangedMessage>();
         }
 
         /// <inheritdoc />

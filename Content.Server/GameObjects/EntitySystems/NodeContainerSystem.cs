@@ -17,15 +17,6 @@ namespace Content.Server.GameObjects.EntitySystems
             SubscribeLocalEvent<NodeContainerComponent, RotateEvent>(OnRotateEvent);
         }
 
-        public override void Shutdown()
-        {
-            base.Shutdown();
-
-
-            UnsubscribeLocalEvent<NodeContainerComponent, PhysicsBodyTypeChangedEvent>(OnBodyTypeChanged);
-            UnsubscribeLocalEvent<NodeContainerComponent, RotateEvent>(OnRotateEvent);
-        }
-
         private void OnBodyTypeChanged(EntityUid uid, NodeContainerComponent component, PhysicsBodyTypeChangedEvent args)
         {
             component.AnchorUpdate();

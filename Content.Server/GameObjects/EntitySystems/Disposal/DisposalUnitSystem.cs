@@ -12,13 +12,6 @@ namespace Content.Server.GameObjects.EntitySystems.Disposal
             SubscribeLocalEvent<DisposalUnitComponent, PhysicsBodyTypeChangedEvent>(BodyTypeChanged);
         }
 
-        public override void Shutdown()
-        {
-            base.Shutdown();
-
-            UnsubscribeLocalEvent<DisposalUnitComponent, PhysicsBodyTypeChangedEvent>();
-        }
-
         private static void BodyTypeChanged(
             EntityUid uid,
             DisposalUnitComponent component,

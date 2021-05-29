@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Content.Client.GameObjects.Components.IconSmoothing;
 using JetBrains.Annotations;
@@ -30,16 +30,6 @@ namespace Content.Client.GameObjects.EntitySystems
             SubscribeLocalEvent<IconSmoothDirtyEvent>(HandleDirtyEvent);
 
             SubscribeLocalEvent<IconSmoothComponent, SnapGridPositionChangedEvent>(HandleSnapGridMove);
-        }
-
-
-        public override void Shutdown()
-        {
-            base.Shutdown();
-
-            UnsubscribeLocalEvent<IconSmoothDirtyEvent>();
-
-            UnsubscribeLocalEvent<IconSmoothComponent, SnapGridPositionChangedEvent>(HandleSnapGridMove);
         }
 
         public override void FrameUpdate(float frameTime)

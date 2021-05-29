@@ -138,11 +138,6 @@ namespace Content.Server.GameObjects.Components.Disposal
 
         [ViewVariables] private BoundUserInterface? UserInterface => Owner.GetUIOrNull(DisposalMailingUnitUiKey.Key);
 
-        /// <summary>
-        ///     Store the translated state.
-        /// </summary>
-        private (PressureState State, string Localized) _locState;
-
         public override bool CanInsert(IEntity entity)
         {
             if (!Anchored)

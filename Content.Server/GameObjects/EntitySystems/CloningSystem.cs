@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Content.Server.GameObjects.Components.Medical;
 using Content.Server.GameObjects.Components.Mobs;
@@ -24,14 +24,6 @@ namespace Content.Server.GameObjects.EntitySystems
 
             SubscribeLocalEvent<CloningPodComponent, ActivateInWorldEvent>(HandleActivate);
             SubscribeLocalEvent<BeingClonedComponent, MindAddedMessage>(HandleMindAdded);
-        }
-
-        public override void Shutdown()
-        {
-            base.Shutdown();
-
-            UnsubscribeLocalEvent<CloningPodComponent, ActivateInWorldEvent>(HandleActivate);
-            UnsubscribeLocalEvent<BeingClonedComponent, MindAddedMessage>(HandleMindAdded);
         }
 
         internal void TransferMindToClone(Mind mind)

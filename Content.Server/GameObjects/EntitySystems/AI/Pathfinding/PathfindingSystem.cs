@@ -214,9 +214,6 @@ namespace Content.Server.GameObjects.EntitySystems.AI.Pathfinding
         public override void Shutdown()
         {
             base.Shutdown();
-            UnsubscribeLocalEvent<CollisionChangeMessage>();
-            UnsubscribeLocalEvent<MoveEvent>();
-            UnsubscribeLocalEvent<AccessReaderChangeMessage>();
 
             _mapManager.OnGridRemoved -= HandleGridRemoval;
             _mapManager.GridChanged -= QueueGridChange;

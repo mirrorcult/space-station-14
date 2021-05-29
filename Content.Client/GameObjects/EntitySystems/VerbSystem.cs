@@ -62,10 +62,6 @@ namespace Content.Client.GameObjects.EntitySystems
         public override void Shutdown()
         {
             base.Shutdown();
-
-            UnsubscribeNetworkEvent<VerbSystemMessages.VerbsResponseMessage>();
-            UnsubscribeNetworkEvent<PlayerContainerVisibilityMessage>();
-            UnsubscribeLocalEvent<MoveEvent>();
             _contextMenuPresenter?.Dispose();
 
             CommandBinds.Unregister<VerbSystem>();

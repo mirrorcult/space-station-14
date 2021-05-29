@@ -23,7 +23,7 @@ namespace Content.Shared.GameObjects.Components.Nutrition
         [DataField("meat")]
         private string? _meatPrototype;
 
-        public bool CanDrop(CanDropEvent args)
+        bool IDraggable.CanDrop(CanDropEvent args)
         {
             return true;
         }

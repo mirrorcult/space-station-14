@@ -53,9 +53,6 @@ namespace Content.Client.GameObjects.EntitySystems
         {
             base.Shutdown();
 
-            UnsubscribeLocalEvent<PlayerAttachSysMessage>();
-            UnsubscribeNetworkEvent<AckStructureConstructionMessage>();
-
             CommandBinds.Unregister<ConstructionSystem>();
         }
 

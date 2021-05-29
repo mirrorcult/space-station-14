@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Content.Shared.Audio;
 using Content.Shared.Interfaces.GameObjects.Components;
 using Robust.Server.GameObjects;
@@ -33,8 +33,6 @@ namespace Content.Server.GameObjects.Components.Items.Storage
                 lockers.Remove(Owner);
 
             var lockerEnt = _robustRandom.Pick(lockers);
-
-            if (lockerEnt == null) return; // No valid lockers anywhere.
 
             var locker = lockerEnt.GetComponent<EntityStorageComponent>();
 

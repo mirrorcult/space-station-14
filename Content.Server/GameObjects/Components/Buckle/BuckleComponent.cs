@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Content.Server.GameObjects.Components.GUI;
@@ -135,7 +135,7 @@ namespace Content.Server.GameObjects.Components.Buckle
                     break;
                 case StrapPosition.Down:
                     EntitySystem.Get<StandingStateSystem>().Down(Owner, force: true);
-                    ownTransform.WorldRotation = Angle.South;
+                    ownTransform.WorldRotation = Angle.Zero;
                     break;
             }
 

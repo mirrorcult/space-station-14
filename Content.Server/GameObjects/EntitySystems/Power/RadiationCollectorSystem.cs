@@ -12,13 +12,6 @@ namespace Content.Server.GameObjects.EntitySystems
             SubscribeLocalEvent<RadiationCollectorComponent, PhysicsBodyTypeChangedEvent>(BodyTypeChanged);
         }
 
-        public override void Shutdown()
-        {
-            base.Shutdown();
-
-            UnsubscribeLocalEvent<RadiationCollectorComponent, PhysicsBodyTypeChangedEvent>();
-        }
-
         private static void BodyTypeChanged(
             EntityUid uid,
             RadiationCollectorComponent component,

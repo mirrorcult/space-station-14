@@ -1,16 +1,13 @@
 #nullable enable
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using Content.Shared.Alert;
-using Content.Shared.GameObjects.Components.Mobs.State;
 using Content.Shared.GameObjects.Components.Movement;
 using Content.Shared.GameObjects.EntitySystems.ActionBlocker;
 using Content.Shared.Interfaces.GameObjects.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.IoC;
 using Robust.Shared.Players;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using Robust.Shared.Serialization.Manager.Attributes;
@@ -50,12 +47,8 @@ namespace Content.Shared.GameObjects.Components.Mobs
         [DataField("slowdownCap")]
         protected float _slowdownCap = 20f;
 
-        private float _helpKnockdownRemove = 1f;
-
         [DataField("helpInterval")]
         private float _helpInterval = 1f;
-
-        [DataField("stunAlertId")] private string _stunAlertId = "stun";
 
         private bool _canHelp = true;
 

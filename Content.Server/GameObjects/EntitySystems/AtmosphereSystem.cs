@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,9 +120,6 @@ namespace Content.Server.GameObjects.EntitySystems
             base.Shutdown();
 
             _mapManager.MapCreated -= OnMapCreated;
-
-            UnsubscribeLocalEvent<RotateEvent>();
-            UnsubscribeLocalEvent<AirtightComponent, SnapGridPositionChangedEvent>(HandleSnapGridMove);
         }
 
         private void RotateEvent(RotateEvent ev)

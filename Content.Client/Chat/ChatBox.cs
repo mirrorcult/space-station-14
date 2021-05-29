@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Content.Client.State;
 using Content.Client.UserInterface;
@@ -331,7 +330,7 @@ namespace Content.Client.Chat
             // update the channel filters
             UnsubFilterItems();
             _filterVBox.Children.Clear();
-            _filterVBox.AddChild(new Control {CustomMinimumSize = (10, 0)});
+            _filterVBox.AddChild(new Control { MinSize = (10, 0)});
             foreach (var channelFilter in ChannelFilterOrder)
             {
                 if (!filterableChannels.Contains(channelFilter)) continue;
@@ -348,7 +347,7 @@ namespace Content.Client.Chat
                 newCheckBox.OnToggled += OnFilterCheckboxToggled;
                 _filterVBox.AddChild(newCheckBox);
             }
-            _filterVBox.AddChild(new Control {CustomMinimumSize = (10, 0)});
+            _filterVBox.AddChild(new Control { MinSize = (10, 0)});
         }
 
         /// <summary>
@@ -874,7 +873,6 @@ namespace Content.Client.Chat
 
         private void UpdateChildColors()
         {
-            if (_textureRect == null) return;
             switch (DrawMode)
             {
                 case DrawModeEnum.Normal:

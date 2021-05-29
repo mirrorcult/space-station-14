@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Content.Client.GameObjects.Components;
 using JetBrains.Annotations;
 using Robust.Shared.GameObjects;
@@ -16,14 +16,6 @@ namespace Content.Client.GameObjects.EntitySystems
 
             SubscribeLocalEvent<WindowSmoothDirtyEvent>(HandleDirtyEvent);
             SubscribeLocalEvent<WindowComponent, SnapGridPositionChangedEvent>(HandleSnapGridMove);
-        }
-
-        public override void Shutdown()
-        {
-            base.Shutdown();
-
-            UnsubscribeLocalEvent<WindowSmoothDirtyEvent>();
-            UnsubscribeLocalEvent<WindowComponent, SnapGridPositionChangedEvent>(HandleSnapGridMove);
         }
 
         private void HandleDirtyEvent(WindowSmoothDirtyEvent ev)

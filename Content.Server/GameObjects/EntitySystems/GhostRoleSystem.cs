@@ -35,13 +35,6 @@ namespace Content.Server.GameObjects.EntitySystems
             SubscribeLocalEvent<PlayerAttachSystemMessage>(OnPlayerAttached);
         }
 
-        public override void Shutdown()
-        {
-            base.Shutdown();
-
-            UnsubscribeLocalEvent<PlayerAttachSystemMessage>();
-        }
-
         private uint GetNextRoleIdentifier()
         {
             return unchecked(_nextRoleIdentifier++);

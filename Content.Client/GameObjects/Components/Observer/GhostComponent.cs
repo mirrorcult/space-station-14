@@ -18,7 +18,6 @@ namespace Content.Client.GameObjects.Components.Observer
         [Dependency] private readonly IGameHud _gameHud = default!;
         [Dependency] private readonly IPlayerManager _playerManager = default!;
         [Dependency] private readonly IComponentManager _componentManager = default!;
-        [Dependency] private readonly IChatManager _chatManager = default!;
 
         public List<string> WarpNames = new();
         public Dictionary<EntityUid,string> PlayerNames = new();
