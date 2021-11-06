@@ -35,6 +35,9 @@
       effects:
       - !type:SatiateThirst
         factor: 2
+    Alcohol:
+      effects:
+      - !type:Drunk
 
 - type: reagent
   id: DrGibb

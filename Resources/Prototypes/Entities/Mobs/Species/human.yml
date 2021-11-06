@@ -69,6 +69,8 @@
     - SlowedDown
     - Stutter
     - Electrocution
+    - Drunk
+    - SlurredSpeech
   # Other
   - type: Inventory
   - type: Clickable
