@@ -36,19 +36,23 @@
                 <BoxContainer Orientation="Horizontal" VerticalExpand="True">
                     <!-- Left panel -->
                     <BoxContainer Orientation="Vertical" Name="LeftPanelContainer" HorizontalExpand="True">
+                        <TextureRect Name="LobbyScreenTexture"
+                                     VerticalExpand="True"
+                                     HorizontalExpand="True"
+                                     Access="Public"
+                                     Stretch="Scale"/>
                         <hudUi:StripeBack>
                             <BoxContainer Orientation="Horizontal" SeparationOverride="6" Margin="3 3 3 3">
                                 <cc:UICommandButton Command="observe" Name="ObserveButton" Text="{Loc 'Observe'}" StyleClasses="ButtonBig"  WindowType="{x:Type lobbyUi:ObserveWarningWindow}"/>
                                 <Label Name="StartTime"
                                        Access="Public"
-                                       Align="Right"
+                                       Align="Center"
                                        FontColorOverride="{x:Static maths:Color.DarkGray}"
                                        StyleClasses="LabelBig" HorizontalExpand="True" />
                                 <Button Name="ReadyButton" Access="Public" ToggleMode="True" Text="{Loc 'Ready Up'}"
                                         StyleClasses="ButtonBig" />
                             </BoxContainer>
                         </hudUi:StripeBack>
-                        <chatUi:ChatBox Name="Chat" Access="Public" VerticalExpand="True" Margin="3 3 3 3"/>
                     </BoxContainer>
                     <!-- Gold line -->
                     <PanelContainer MinSize="2 0">
@@ -57,8 +61,20 @@
                         </PanelContainer.PanelOverride>
                     </PanelContainer>
                     <!-- Right panel -->
-                    <Control HorizontalExpand="True">
+                    <Control HorizontalExpand="True" Name="RightPanelContainer">
                         <BoxContainer Orientation="Vertical">
+                            <!-- Server info -->
+                            <hudUi:NanoHeading Text="{Loc 'Server Info'}" />
+                            <info:ServerInfo Name="ServerInfo"
+                                             Access="Public"
+                                             VerticalExpand="True"
+                                             Margin="3 3 3 3"/>
+                            <PanelContainer>
+                                <PanelContainer.PanelOverride>
+                                    <gfx:StyleBoxFlat BackgroundColor="{x:Static style:StyleNano.NanoGold}"
+                                                      ContentMarginTopOverride="2" />
+                                </PanelContainer.PanelOverride>
+                            </PanelContainer>
                             <!-- Player list -->
                             <hudUi:NanoHeading Text="{Loc 'Online Players'}" />
                             <lobbyUi:LobbyPlayerList Name="OnlinePlayerList"
@@ -66,12 +82,22 @@
                                                      HorizontalExpand="True"
                                                      VerticalExpand="True"
                                                      Margin="3 3 3 3" />
-                            <!-- Server info -->
-                            <hudUi:NanoHeading Text="{Loc 'Server Info'}" />
-                            <info:ServerInfo Name="ServerInfo"
-                                             Access="Public"
-                                             VerticalExpand="True"
-                                             Margin="3 3 3 3"/>
+                            <PanelContainer>
+                                <PanelContainer.PanelOverride>
+                                    <gfx:StyleBoxFlat BackgroundColor="{x:Static style:StyleNano.NanoGold}"
+                                                      ContentMarginTopOverride="2" />
+                                </PanelContainer.PanelOverride>
+                            </PanelContainer>
+                            <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview"
+                                                                Access="Public"
+                                                                HorizontalAlignment="Left"/>
+                            <PanelContainer>
+                                <PanelContainer.PanelOverride>
+                                    <gfx:StyleBoxFlat BackgroundColor="{x:Static style:StyleNano.NanoGold}"
+                                                      ContentMarginTopOverride="2" />
+                                </PanelContainer.PanelOverride>
+                            </PanelContainer>
+                            <chatUi:ChatBox Name="Chat" Access="Public" VerticalExpand="True" Margin="3 3 3 3"/>
                         </BoxContainer>
                         <BoxContainer Orientation="Vertical"
                                       Name="VoteContainer"

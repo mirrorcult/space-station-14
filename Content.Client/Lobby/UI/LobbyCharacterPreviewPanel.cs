@@ -28,9 +28,10 @@ namespace Content.Client.Lobby.UI
         private readonly BoxContainer _loaded;
         private readonly Label _unloaded;
 
-        public LobbyCharacterPreviewPanel(IEntityManager entityManager,
-            IClientPreferencesManager preferencesManager)
+        public LobbyCharacterPreviewPanel()
         {
+            var entityManager = IoCManager.Resolve<IEntityManager>();
+            var preferencesManager = IoCManager.Resolve<IClientPreferencesManager>();
             _preferencesManager = preferencesManager;
             _previewDummy = entityManager.SpawnEntity("MobHumanDummy", MapCoordinates.Nullspace);
 
@@ -42,7 +43,8 @@ namespace Content.Client.Lobby.UI
             CharacterSetupButton = new Button
             {
                 Text = Loc.GetString("lobby-character-preview-panel-character-setup-button"),
-                HorizontalAlignment = HAlignment.Left
+                HorizontalAlignment = HAlignment.Left,
+                Margin = new Thickness(3)
             };
 
             _summaryLabel = new Label();
@@ -108,7 +110,8 @@ namespace Content.Client.Lobby.UI
             {
                 Sprite = entity.GetComponent<ISpriteComponent>(),
                 OverrideDirection = direction,
-                Scale = (2, 2)
+                Scale = (2, 2),
+                Margin = new Thickness(2),
             };
         }
 

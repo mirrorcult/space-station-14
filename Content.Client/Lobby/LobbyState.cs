@@ -17,11 +17,13 @@ using Robust.Client.Player;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using Robust.Client.Utility;
 using Robust.Shared.GameObjects;
 using Robust.Shared.IoC;
 using Robust.Shared.Localization;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Robust.Shared.Utility;
 using Robust.Shared.ViewVariables;
 
 namespace Content.Client.Lobby
@@ -85,6 +87,9 @@ namespace Content.Client.Lobby
                 _userInterfaceManager.StateRoot.RemoveChild(_lobby);
                 _userInterfaceManager.StateRoot.AddChild(_characterSetup);
             };
+
+            _lobby.LobbyScreenTexture.Texture =
+                new SpriteSpecifier.Texture(new ResourcePath("/Textures/Lobby/meta.png")).Frame0();
 
             _lobby.ReadyButton.OnPressed += _ =>
             {

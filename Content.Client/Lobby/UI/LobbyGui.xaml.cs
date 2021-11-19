@@ -15,8 +15,6 @@ namespace Content.Client.Lobby.UI
     [GenerateTypedNameReferences]
     internal sealed partial class LobbyGui : Control
     {
-        public LobbyCharacterPreviewPanel CharacterPreview { get; }
-
         public LobbyGui(IEntityManager entityManager,
             IClientPreferencesManager preferencesManager)
         {
@@ -24,16 +22,6 @@ namespace Content.Client.Lobby.UI
 
             ServerName.HorizontalExpand = true;
             ServerName.HorizontalAlignment = HAlignment.Center;
-
-            CharacterPreview = new LobbyCharacterPreviewPanel(
-                entityManager,
-                preferencesManager)
-            {
-                HorizontalAlignment = HAlignment.Left
-            };
-
-            LeftPanelContainer.AddChild(CharacterPreview);
-            CharacterPreview.SetPositionFirst();
         }
     }
 
