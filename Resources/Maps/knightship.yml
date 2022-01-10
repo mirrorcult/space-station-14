@@ -5,7 +5,7 @@ meta:
   postmapinit: false
 tilemap:
   0: space
-  1: floor_asteroid_coarse_sand0
+  1: floor_asteroid_coarse_saasdsand0
   2: floor_asteroid_coarse_sand1
   3: floor_asteroid_coarse_sand2
   4: floor_asteroid_coarse_sand_dug
