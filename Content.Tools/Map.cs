@@ -18,7 +18,7 @@ namespace Content.Tools
             var stream = new YamlStream();
 
             stream.Load(reader);
-
+asdadasd
             Root = stream.Documents[0].RootNode;
             TilemapNode = (YamlMappingNode) Root["tilemap"];
             GridsNode = (YamlSequenceNode) Root["grids"];
