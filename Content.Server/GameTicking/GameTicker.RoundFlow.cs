@@ -79,10 +79,11 @@ namespace Content.Server.GameTicking
             var startTime = _gameTiming.RealTime;
             var maps = new List<GameMapPrototype>() { _gameMapManager.GetSelectedMapChecked(true) };
 
+            var ev = new LoadingMapsEvent(maps);
             // Let game rules dictate what maps we should load.
-            RaiseLocalEvent(new LoadingMapsEvent(maps));
+            RaiseLocalEvent(ev);
 
-            foreach (var map in maps)
+            foreach (var map in ev.Maps)
             {
                 var toLoad = DefaultMap;
                 if (maps[0] != map)

@@ -155,6 +155,7 @@
     color: "#ffff33"
     sprite: Structures/Power/Generation/Singularity/emitter.rsi
     state: 'projectile'
+    shader: unshaded
   - type: Physics
   - type: Fixtures
     fixtures:
@@ -170,6 +171,11 @@
         Heat: 20
     soundHit:
       path: /Audio/Weapons/Guns/Hits/bullet_hit.ogg
+  - type: PointLight
+    color: "#34eb46"
+    radius: 1.0
+    energy: 5.0
+    enabled: true
   - type: Tag
     tags:
     - EmitterBolt

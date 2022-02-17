@@ -58,3 +58,13 @@
   rules:
     - TraitorDeathMatch
     - MaxTimeRestart
+
+- type: gamePreset
+  id: ShipBattle
+  alias:
+  - shipbattle
+  - shipvship
+  name: ship-battle-title
+  description: ship-battle-description
+  rules:
+  - ShipBattle
