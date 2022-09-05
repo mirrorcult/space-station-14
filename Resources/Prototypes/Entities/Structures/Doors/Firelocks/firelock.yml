@@ -5,15 +5,14 @@
   description: Apply crowbar.
   components:
     - type: AtmosAlarmable
-      alarmedBy:
-      - FireAlarm
-      - AirAlarm
+      syncWith:
+        - FireAlarm
+        - AirAlarm
     - type: ApcPowerReceiver
     - type: ExtensionCableReceiver
     - type: DeviceNetwork
-      deviceNetId: Apc
+      deviceNetId: AtmosDevices
       receiveFrequencyId: AtmosMonitor
-    - type: ApcNetworkConnection
     - type: InteractionOutline
     - type: Damageable
       damageContainer: Inorganic
@@ -29,6 +28,7 @@
     - type: Sprite
       netsync: false
       sprite: Structures/Doors/Airlocks/Standard/firelock.rsi
+      snapCardinals: true
       layers:
         - state: closed
           map: ["enum.DoorVisualLayers.Base"]
@@ -78,7 +78,7 @@
         - type: AirlockVisualizer
           animationTime: 0.6
           emergencyAccessLayer: false
-        - type: WiresVisualizer
+    - type: WiresVisuals
     - type: Wires
       BoardName: "Firelock Control"
       LayoutId: Firelock
@@ -86,13 +86,19 @@
       interfaces:
         - key: enum.WiresUiKey.Key
           type: WiresBoundUserInterface
+    - type: Physics
+      canCollide: false
     - type: Airtight
       fixVacuum: true
+      airBlocked: false
       noAirWhenFullyAirBlocked: true
     - type: Occluder
+      enabled: false
     - type: Construction
       graph: Firelock
       node: Firelock
+    - type: WallMount
+      arc: 360
 
 - type: entity
   id: FirelockGlass
@@ -123,8 +129,10 @@
   components:
     - type: Sprite
       sprite: Structures/Doors/edge_door_hazard.rsi
+      snapCardinals: false
     - type: Airtight
       fixVacuum: true
+      airBlocked: false
       noAirWhenFullyAirBlocked: false
       airBlockedDirection:
         - South
@@ -142,3 +150,5 @@
       enabled: false
     - type: Door
       occludes: false
+    - type: Physics
+      canCollide: false

@@ -12,12 +12,16 @@ using Robust.Client.Debugging;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.Placement;
+using Robust.Client.Placement.Modes;
 using Robust.Client.ResourceManagement;
+using Robust.Client.UserInterface;
+using Robust.Client.UserInterface.Controllers.Implementations;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
+using Robust.Shared.Players;
 using static Robust.Client.UserInterface.Controls.BoxContainer;
 
 namespace Content.Client.Sandbox
@@ -45,7 +49,6 @@ namespace Content.Client.Sandbox
         {
             Resizable = false;
             _gameHud = IoCManager.Resolve<IGameHud>();
-
             Title = Loc.GetString("sandbox-window-title");
 
             var vBox = new BoxContainer
@@ -117,11 +120,13 @@ namespace Content.Client.Sandbox
     {
         [Dependency] private readonly IClientConsoleHost _consoleHost = default!;
         [Dependency] private readonly IGameHud _gameHud = default!;
+        [Dependency] private readonly IMapManager _mapManager = default!;
         [Dependency] private readonly IPlacementManager _placementManager = default!;
         [Dependency] private readonly IResourceCache _resourceCache = default!;
         [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
         [Dependency] private readonly IInputManager _inputManager = default!;
         [Dependency] private readonly IClientAdminManager _adminManager = default!;
+        [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
 
         public bool SandboxAllowed { get; private set; }
 
@@ -148,6 +153,53 @@ namespace Content.Client.Sandbox
                 InputCmdHandler.FromDelegate(session => ToggleTilesWindow()));
             _inputManager.SetInputCommand(ContentKeyFunctions.OpenDecalSpawnWindow,
                 InputCmdHandler.FromDelegate(session => ToggleDecalsWindow()));
+
+            CommandBinds.Builder
+                .Bind(ContentKeyFunctions.EditorCopyObject, new PointerInputCmdHandler(OnCopy))
+                .Register<SandboxSystem>();
+        }
+
+        private bool OnCopy(ICommonSession? session, EntityCoordinates coords, EntityUid uid)
+        {
+            if (!CanSandbox())
+                return false;
+
+            // Try copy entity.
+            if (uid.IsValid()
+                && EntityManager.TryGetComponent(uid, out MetaDataComponent? comp)
+                && !comp.EntityDeleted)
+            {
+                if (comp.EntityPrototype == null || comp.EntityPrototype.NoSpawn || comp.EntityPrototype.Abstract)
+                    return false;
+
+                if (_placementManager.Eraser)
+                    _placementManager.ToggleEraser();
+
+                _placementManager.BeginPlacing(new()
+                {
+                    EntityType = comp.EntityPrototype.ID,
+                    IsTile = false,
+                    TileType = 0,
+                    PlacementOption = comp.EntityPrototype.PlacementMode
+                });
+                return true;
+            }
+
+            // Try copy tile.
+            if (!_mapManager.TryFindGridAt(coords.ToMap(EntityManager), out var grid) || !grid.TryGetTileRef(coords, out var tileRef))
+                return false;
+
+            if (_placementManager.Eraser)
+                _placementManager.ToggleEraser();
+
+            _placementManager.BeginPlacing(new()
+            {
+                EntityType = null,
+                IsTile = true,
+                TileType = tileRef.Tile.TypeId,
+                PlacementOption = nameof(AlignTileAny)
+            });
+            return true;
         }
 
         private void OnAdminStatus()
@@ -196,6 +248,7 @@ namespace Content.Client.Sandbox
             // TODO: Gamehud moment
             _gameHud.SandboxButtonToggled -= SandboxButtonPressed;
             _adminManager.AdminStatusUpdated -= OnAdminStatus;
+            CommandBinds.Unregister<SandboxSystem>();
         }
 
         private void OnSandboxStatus(MsgSandboxStatus ev)
@@ -339,47 +392,20 @@ namespace Content.Client.Sandbox
             RaiseNetworkEvent(new MsgSandboxSuicide());
         }
 
+
         // TODO: These should check for command perms + be reset if the round is over.
         public void ToggleEntitySpawnWindow()
         {
-            if (_spawnWindow == null)
-            {
-                if (!CanSandbox()) return;
-
-                _spawnWindow = new EntitySpawnWindow(_placementManager, PrototypeManager, _resourceCache);
-                _spawnWindow.OpenToLeft();
+            if (!CanSandbox())
                 return;
-            }
-
-            if (_spawnWindow.IsOpen)
-            {
-                _spawnWindow.Close();
-            }
-            else
-            {
-                _spawnWindow.Open();
-            }
+            _userInterfaceManager.GetUIController<EntitySpawningUIController>().ToggleWindow();
         }
 
         public void ToggleTilesWindow()
         {
-            if (_tilesSpawnWindow == null)
-            {
-                if (!CanSandbox()) return;
-
-                _tilesSpawnWindow = new TileSpawnWindow(_tileDefinitionManager, _placementManager, _resourceCache);
-                _tilesSpawnWindow.OpenToLeft();
+            if (!CanSandbox())
                 return;
-            }
-
-            if (_tilesSpawnWindow.IsOpen)
-            {
-                _tilesSpawnWindow.Close();
-            }
-            else
-            {
-                _tilesSpawnWindow.Open();
-            }
+            _userInterfaceManager.GetUIController<TileSpawningUIController>().ToggleWindow();
         }
 
         public void ToggleDecalsWindow()

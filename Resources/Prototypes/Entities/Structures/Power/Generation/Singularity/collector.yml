@@ -9,7 +9,6 @@
   - type: InteractionOutline
   - type: Physics
     bodyType: Static
-    fixedRotation: false
   - type: Fixtures
     fixtures:
     - shape:
@@ -26,6 +25,7 @@
   - type: Sprite
     sprite: Structures/Power/Generation/Singularity/collector.rsi
     netsync: false
+    snapCardinals: true
     layers:
       - state: ca_on
         map: ["enum.RadiationCollectorVisualLayers.Main"]

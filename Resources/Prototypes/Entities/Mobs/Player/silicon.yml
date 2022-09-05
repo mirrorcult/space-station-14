@@ -61,6 +61,9 @@
     safe: false
   - type: StandingState
   - type: Alerts
+  - type: Tag
+    tags:
+      - ShoesRequiredStepTriggerImmune
 
 - type: entity
   name: drone
@@ -68,6 +71,7 @@
   parent: PlayerSiliconBase
   components:
   - type: Drone
+  - type: InnateTool
     tools:
       - id: ClothingBackpackSatchelDrone
       - id: trayScanner
@@ -96,8 +100,8 @@
     baseSprintSpeed : 5
   - type: MobState
     thresholds:
-      0: !type:NormalMobState {}
-      60: !type:DeadMobState {}
+      0: Alive
+      60: Dead
   - type: Flashable
   - type: NoSlip
   - type: StatusEffects
@@ -107,10 +111,8 @@
     - SlowedDown
   - type: SlowOnDamage
     speedModifierThresholds:
-      20: 0.8
-      30: 0.6
-      40: 0.4
-      50: 0.2
+      30: 0.7
+      50: 0.5
   - type: Temperature
     heatDamageThreshold: 5000
     currentTemperature: 310.15
@@ -164,6 +166,7 @@
     autoRot: true
   - type: Tag
     tags:
+      - ShoesRequiredStepTriggerImmune
       - CannotSuicide
 
 - type: entity
@@ -171,13 +174,12 @@
   id: Onestar
   parent: PlayerSiliconBase
   components:
-  - type: Drone
-    applyLaws: false
+  - type: InnateTool
     tools:
-      - id: Minigun
+      - id: WeaponMinigun
       - id: EnergySword
-      - id: LauncherMultipleRocket
-      - id: XrayCannon
+      - id: WeaponLauncherMultipleRocket
+      - id: WeaponXrayCannon
   - type: UserInterface
     interfaces:
     - key: enum.StrippingUiKey.Key
@@ -186,14 +188,14 @@
     makeSentient: true
     name: Onestar Mecha
     description: You are an experimental mecha created by who-knows-what, all you know is that you have weapons and you detect fleshy moving targets nearby...
-    rules: Use your weapons to cause havok. You are an antagonist.
+    rules: Use your weapons to cause havoc. You are an antagonist.
   - type: MovementSpeedModifier
     baseWalkSpeed : 3
     baseSprintSpeed : 2
   - type: MobState
     thresholds:
-      0: !type:NormalMobState {}
-      1000: !type:DeadMobState {}
+      0: Alive
+      1000: Dead
   - type: Sprite
     drawdepth: Mobs
     netsync: false
@@ -215,9 +217,10 @@
       layer:
       - LargeMobLayer
   - type: Appearance
-    visuals:
-    - type: DamageStateVisualizer
-      rotate: true
-      normal: onestar_boss
-      dead: onestar_boss_wrecked
+    rotate: true
+    states:
+      Alive:
+        Base: onestar_boss
+      Dead:
+        Base: onestar_boss_wrecked
   - type: CombatMode

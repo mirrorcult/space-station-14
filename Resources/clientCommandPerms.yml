@@ -1,3 +1,31 @@
+# Available to everybody
+- Commands:
+    - disconnect
+    - help
+    - list
+    - quit
+    - hardquit
+    - svbind
+    - bind
+    - exec # macro moment
+    - cls
+    - vram
+    - monitor
+    - setmonitor
+    - keyinfo
+    - setclipboard
+    - getclipboard
+    - net_graph
+    - net_watchent
+    - net_draw_interp
+    - devwindow
+    - fill
+    - dumpentities
+    - ">"
+    - gcf
+    - gc
+    - gc_mode
+
 - Flags: DEBUG
   Commands:
     - atvrange
@@ -14,15 +42,18 @@
     - toggledecals
     - nodevis
     - nodevisfilter
+    - showspread
+    - showambient
+    - showemergencyshuttle
+    - zoom
 
 - Flags: MAPPING
   Commands:
-    - tethergun
-    - griddrag
     - showmarkers
     - showsubfloor
     - showsubfloorforever
     - mapping
+    - toggleautosave
     - toggledecals
     - nodevis
     - nodevisfilter
@@ -30,6 +61,7 @@
 - Flags: ADMIN
   Commands:
     - togglehealthoverlay
+    - togglelight
 
 - Flags: QUERY
   Commands:

@@ -164,7 +164,7 @@ namespace Content.Client.Actions.UI
                 extra = Loc.GetString("ui-actionslot-charges", ("charges", Action.Charges));
             }
 
-            var name = FormattedMessage.FromMarkupPermissive(Loc.GetString(Action.Name));
+            var name = FormattedMessage.FromMarkupPermissive(Loc.GetString(Action.DisplayName));
             var decr = FormattedMessage.FromMarkupPermissive(Loc.GetString(Action.Description));
 
             var tooltip = new ActionAlertTooltip(name, decr, extra);
@@ -436,7 +436,7 @@ namespace Content.Client.Actions.UI
                 return;
             }
 
-            if (Action?.EntityIcon == null || !_entMan.TryGetComponent(Action.EntityIcon.Value, out SpriteComponent sprite))
+            if (Action?.EntityIcon == null || !_entMan.TryGetComponent(Action.EntityIcon.Value, out SpriteComponent? sprite))
             {
                 _bigItemSpriteView.Visible = false;
                 _bigItemSpriteView.Sprite = null;

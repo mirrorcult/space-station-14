@@ -149,7 +149,7 @@ namespace Content.Client.Actions.UI
 
         private void UpdateItemIcon()
         {
-            if (Action?.EntityIcon == null || !IoCManager.Resolve<IEntityManager>().TryGetComponent(Action.EntityIcon.Value, out SpriteComponent sprite))
+            if (Action?.EntityIcon == null || !IoCManager.Resolve<IEntityManager>().TryGetComponent(Action.EntityIcon.Value, out SpriteComponent? sprite))
             {
                 _bigItemSpriteView.Visible = false;
                 _bigItemSpriteView.Sprite = null;
@@ -193,7 +193,7 @@ namespace Content.Client.Actions.UI
 
         private Control SupplyTooltip(Control? sender)
         {
-            var name = FormattedMessage.FromMarkupPermissive(Loc.GetString(Action.Name));
+            var name = FormattedMessage.FromMarkupPermissive(Loc.GetString(Action.DisplayName));
             var decr = FormattedMessage.FromMarkupPermissive(Loc.GetString(Action.Description));
 
             var tooltip = new ActionAlertTooltip(name, decr);

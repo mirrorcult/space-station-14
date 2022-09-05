@@ -20,6 +20,9 @@ namespace Content.Shared.Atmos.Piping.Unary.Components
             Gas.Plasma,
             Gas.Tritium,
             Gas.WaterVapor,
+            Gas.Miasma,
+            Gas.NitrousOxide,
+            Gas.Frezon
         };
 
         // Presets for 'dumb' air alarm modes
@@ -27,7 +30,7 @@ namespace Content.Shared.Atmos.Piping.Unary.Components
         public static GasVentScrubberData FilterModePreset = new GasVentScrubberData
         {
             Enabled = true,
-            FilterGases = GasVentScrubberData.DefaultFilterGases,
+            FilterGases = new(GasVentScrubberData.DefaultFilterGases),
             PumpDirection = ScrubberPumpDirection.Scrubbing,
             VolumeRate = 200f,
             WideNet = false
@@ -37,7 +40,7 @@ namespace Content.Shared.Atmos.Piping.Unary.Components
         {
             Enabled = false,
             Dirty = true,
-            FilterGases = GasVentScrubberData.DefaultFilterGases,
+            FilterGases = new(GasVentScrubberData.DefaultFilterGases),
             PumpDirection = ScrubberPumpDirection.Scrubbing,
             VolumeRate = 200f,
             WideNet = false
@@ -47,7 +50,18 @@ namespace Content.Shared.Atmos.Piping.Unary.Components
         {
             Enabled = true,
             Dirty = true,
-            FilterGases = GasVentScrubberData.DefaultFilterGases,
+            FilterGases = new(GasVentScrubberData.DefaultFilterGases),
+            PumpDirection = ScrubberPumpDirection.Siphoning,
+            VolumeRate = 200f,
+            WideNet = false
+        };
+
+        public static GasVentScrubberData ReplaceModePreset = new GasVentScrubberData
+        {
+            Enabled = true,
+            IgnoreAlarms = true,
+            Dirty = true,
+            FilterGases = new(GasVentScrubberData.DefaultFilterGases),
             PumpDirection = ScrubberPumpDirection.Siphoning,
             VolumeRate = 200f,
             WideNet = false

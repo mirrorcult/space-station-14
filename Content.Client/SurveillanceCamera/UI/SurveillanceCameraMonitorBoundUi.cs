@@ -13,7 +13,7 @@ public sealed class SurveillanceCameraMonitorBoundUserInterface : BoundUserInter
     private SurveillanceCameraMonitorWindow? _window;
     private EntityUid? _currentCamera;
 
-    public SurveillanceCameraMonitorBoundUserInterface(ClientUserInterfaceComponent owner, object uiKey) : base(owner, uiKey)
+    public SurveillanceCameraMonitorBoundUserInterface(ClientUserInterfaceComponent owner, Enum uiKey) : base(owner, uiKey)
     {
         IoCManager.InjectDependencies(this);
         _eyeLerpingSystem = _entityManager.EntitySysManager.GetEntitySystem<EyeLerpingSystem>();
@@ -104,7 +104,7 @@ public sealed class SurveillanceCameraMonitorBoundUserInterface : BoundUserInter
                 _currentCamera = cast.ActiveCamera;
             }
 
-            if (_entityManager.TryGetComponent(cast.ActiveCamera, out EyeComponent eye))
+            if (_entityManager.TryGetComponent(cast.ActiveCamera, out EyeComponent? eye))
             {
                 _window.UpdateState(eye.Eye, cast.Subnets, cast.ActiveAddress, cast.ActiveSubnet, cast.Cameras);
             }

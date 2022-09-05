@@ -48,7 +48,7 @@
                 <BoxContainer Orientation="Vertical" HorizontalExpand="True">
                     <!-- Top row -->
                     <BoxContainer Orientation="Horizontal" MinSize="0 40" Name="HeaderContainer" Access="Public" SeparationOverride="4">
-                        <Label Margin="8 0 0 0" StyleClasses="LabelHeadingBigger" VAlign="Center" Text="{Loc 'ui-lobby-title'} " />
+                        <Label Margin="8 0 0 0" StyleClasses="LabelHeadingBigger" VAlign="Center" Text="{Loc 'ui-lobby-title'}" />
                         <Label Name="ServerName" Access="Public" StyleClasses="LabelHeadingBigger" VAlign="Center" />
                     </BoxContainer>
                     <!-- Gold line -->
@@ -65,6 +65,7 @@
                     <!-- Server info -->
                     <hudUi:NanoHeading Text="{Loc 'ui-lobby-server-info-block'}" />
                     <info:ServerInfo Name="ServerInfo" Access="Public" MinSize="0 30" VerticalExpand="false" Margin="3 3 3 3" MaxWidth="400"  HorizontalAlignment="Left"/>
+                    <Label Name="StationTime" Access="Public" FontColorOverride="{x:Static maths:Color.LightGray}" Margin="3 3 3 3" HorizontalAlignment="Left"/>
                     <ui:HSpacer Spacing="5"/>
                     <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public"></lobbyUi:LobbyCharacterPreviewPanel>
                     <ui:HSpacer Spacing="5"/>

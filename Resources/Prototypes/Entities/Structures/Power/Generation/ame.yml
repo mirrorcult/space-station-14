@@ -8,10 +8,11 @@
   - type: Clickable
   - type: InteractionOutline
   - type: Sprite
+    netsync: false
+    snapCardinals: true
     sprite: Structures/Power/Generation/ame.rsi
     state: control
   - type: Physics
-    fixedRotation: false
   - type: Fixtures
     fixtures:
     - shape:
@@ -55,8 +56,7 @@
     - key: enum.AMEControllerUiKey.Key
       type: AMEControllerBoundUserInterface
   - type: Appearance
-    visuals:
-    - type: AMEControllerVisualizer
+  - type: AMEControllerVisuals
   - type: NodeContainer
     examinable: true
     nodes:
@@ -90,6 +90,7 @@
   - type: Clickable
   - type: InteractionOutline
   - type: Sprite
+    netsync: false
     drawdepth: Walls
     sprite: Structures/Power/Generation/ame.rsi
     state: shield_0
@@ -137,8 +138,7 @@
     energy: 0.5
     color: "#00AAFF"
   - type: Appearance
-    visuals:
-    - type: AMEVisualizer
+  - type: AMEShieldingVisuals
   - type: Construction
     graph: AMEShielding
     node: ameShielding
