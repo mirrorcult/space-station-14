@@ -29,9 +29,6 @@ namespace Content.Server.Access.Systems
 
         private void OnMapInit(EntityUid uid, IdCardComponent id, MapInitEvent args)
         {
-            // On one hand, these prototypes should default to having the correct name. On the other hand, id cards are
-            // rarely ever spawned in on their own without an owner, so this is fine.
-            id.OriginalEntityName ??= EntityManager.GetComponent<MetaDataComponent>(id.Owner).EntityName;
             UpdateEntityName(uid, id);
         }
 
@@ -47,29 +44,34 @@ namespace Content.Server.Access.Systems
                     if (transformComponent != null)
                     {
                         _popupSystem.PopupCoordinates(Loc.GetString("id-card-component-microwave-burnt", ("id", uid)),
-                         transformComponent.Coordinates, Filter.Pvs(uid), PopupType.Medium);
+                         transformComponent.Coordinates, PopupType.Medium);
                         EntityManager.SpawnEntity("FoodBadRecipe",
                             transformComponent.Coordinates);
                     }
+                    _adminLogger.Add(LogType.Action, LogImpact.Medium,
+                        $"{ToPrettyString(args.Microwave)} burnt {ToPrettyString(uid):entity}");
                     EntityManager.QueueDeleteEntity(uid);
                     return;
                 }
                 // If they're unlucky, brick their ID
                 if (randomPick <= 0.25f)
                 {
-                    _popupSystem.PopupEntity(Loc.GetString("id-card-component-microwave-bricked", ("id", uid)),
-                        uid, Filter.Pvs(uid));
+                    _popupSystem.PopupEntity(Loc.GetString("id-card-component-microwave-bricked", ("id", uid)), uid);
                     access.Tags.Clear();
+                    _adminLogger.Add(LogType.Action, LogImpact.Medium,
+                        $"{ToPrettyString(args.Microwave)} cleared access on {ToPrettyString(uid):entity}");
                 }
                 else
                 {
-                    _popupSystem.PopupEntity(Loc.GetString("id-card-component-microwave-safe", ("id", uid)),
-                        uid, Filter.Pvs(uid), PopupType.Medium);
+                    _popupSystem.PopupEntity(Loc.GetString("id-card-component-microwave-safe", ("id", uid)), uid, PopupType.Medium);
                 }
 
                 // Give them a wonderful new access to compensate for everything
                 var random = _random.Pick(_prototypeManager.EnumeratePrototypes<AccessLevelPrototype>().ToArray());
                 access.Tags.Add(random.ID);
+
+                _adminLogger.Add(LogType.Action, LogImpact.Medium,
+                        $"{ToPrettyString(args.Microwave)} added {random.ID} access to {ToPrettyString(uid):entity}");
             }
         }
 
@@ -80,21 +82,34 @@ namespace Content.Server.Access.Systems
         /// <remarks>
         /// If provided with a player's EntityUid to the player parameter, adds the change to the admin logs.
         /// </remarks>
-        public bool TryChangeJobTitle(EntityUid uid, string jobTitle, IdCardComponent? id = null, EntityUid? player = null)
+        public bool TryChangeJobTitle(EntityUid uid, string? jobTitle, IdCardComponent? id = null, EntityUid? player = null)
         {
             if (!Resolve(uid, ref id))
                 return false;
 
-            if (jobTitle.Length > SharedIdCardConsoleComponent.MaxJobTitleLength)
-                jobTitle = jobTitle[..SharedIdCardConsoleComponent.MaxJobTitleLength];
+            if (!string.IsNullOrWhiteSpace(jobTitle))
+            {
+                jobTitle = jobTitle.Trim();
 
+                if (jobTitle.Length > SharedIdCardConsoleComponent.MaxJobTitleLength)
+                    jobTitle = jobTitle[..SharedIdCardConsoleComponent.MaxJobTitleLength];
+            }
+            else
+            {
+                jobTitle = null;
+            }
+
+            if (id.JobTitle == jobTitle)
+                return true;
             id.JobTitle = jobTitle;
             Dirty(id);
             UpdateEntityName(uid, id);
 
             if (player != null)
+            {
                 _adminLogger.Add(LogType.Identity, LogImpact.Low,
-                $"{ToPrettyString(player.Value):player} has changed the job title of {ToPrettyString(id.Owner):entity} to {jobTitle} ");
+                    $"{ToPrettyString(player.Value):player} has changed the job title of {ToPrettyString(id.Owner):entity} to {jobTitle} ");
+            }
             return true;
         }
 
@@ -105,21 +120,33 @@ namespace Content.Server.Access.Systems
         /// <remarks>
         /// If provided with a player's EntityUid to the player parameter, adds the change to the admin logs.
         /// </remarks>
-        public bool TryChangeFullName(EntityUid uid, string fullName, IdCardComponent? id = null, EntityUid? player = null)
+        public bool TryChangeFullName(EntityUid uid, string? fullName, IdCardComponent? id = null, EntityUid? player = null)
         {
             if (!Resolve(uid, ref id))
                 return false;
 
-            if (fullName.Length > SharedIdCardConsoleComponent.MaxFullNameLength)
-                fullName = fullName[..SharedIdCardConsoleComponent.MaxFullNameLength];
+            if (!string.IsNullOrWhiteSpace(fullName))
+            {
+                fullName = fullName.Trim();
+                if (fullName.Length > SharedIdCardConsoleComponent.MaxFullNameLength)
+                    fullName = fullName[..SharedIdCardConsoleComponent.MaxFullNameLength];
+            }
+            else
+            {
+                fullName = null;
+            }
 
+            if (id.FullName == fullName)
+                return true;
             id.FullName = fullName;
             Dirty(id);
             UpdateEntityName(uid, id);
 
             if (player != null)
+            {
                 _adminLogger.Add(LogType.Identity, LogImpact.Low,
-                $"{ToPrettyString(player.Value):player} has changed the name of {ToPrettyString(id.Owner):entity} to {fullName} ");
+                    $"{ToPrettyString(player.Value):player} has changed the name of {ToPrettyString(id.Owner):entity} to {fullName} ");
+            }
             return true;
         }
 
@@ -135,17 +162,10 @@ namespace Content.Server.Access.Systems
             if (!Resolve(uid, ref id))
                 return;
 
-            if (string.IsNullOrWhiteSpace(id.FullName) && string.IsNullOrWhiteSpace(id.JobTitle))
-            {
-                EntityManager.GetComponent<MetaDataComponent>(id.Owner).EntityName = id.OriginalEntityName;
-                return;
-            }
-
             var jobSuffix = string.IsNullOrWhiteSpace(id.JobTitle) ? string.Empty : $" ({id.JobTitle})";
 
             var val = string.IsNullOrWhiteSpace(id.FullName)
                 ? Loc.GetString("access-id-card-component-owner-name-job-title-text",
-                    ("originalOwnerName", id.OriginalEntityName),
                     ("jobSuffix", jobSuffix))
                 : Loc.GetString("access-id-card-component-owner-full-name-job-title-text",
                     ("fullName", id.FullName),

@@ -1,6 +1,4 @@
 using Content.Shared.Actions.ActionTypes;
-using Content.Shared.Dataset;
-using Content.Shared.Disease;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
@@ -30,7 +28,7 @@ namespace Content.Server.RatKing
         /// <summary>
         ///     The action for the Domain ability
         /// </summary>
-        [ViewVariables, DataField("actionDomain", required: true)]
+        [DataField("actionDomain", required: true)]
         public InstantAction ActionDomain = new();
 
         /// <summary>
@@ -42,13 +40,7 @@ namespace Content.Server.RatKing
         /// <summary>
         ///     How many moles of Miasma are released after one us of Domain
         /// </summary>
-        [ViewVariables, DataField("molesMiasmaPerDomain")]
+        [DataField("molesMiasmaPerDomain")]
         public float MolesMiasmaPerDomain = 100f;
-
-        // Both of these are used to generate the random name for rat king.
-        [DataField("titleNameDataset", customTypeSerializer: typeof(PrototypeIdSerializer<DatasetPrototype>))]
-        public string TitleNameDataset = "RegalRatNameTitle";
-        [DataField("kingdomNameDataset", customTypeSerializer: typeof(PrototypeIdSerializer<DatasetPrototype>))]
-        public string KingdomNameDataset = "RegalRatNameKingdom";
     }
 };

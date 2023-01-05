@@ -8,7 +8,8 @@
   - type: SolutionContainerManager
     solutions:
       drink:
-        maxVol: 10
+        maxVol: 20
+        canMix: true
   - type: FitsInDispenser
     solution: drink
   - type: DrawableSolution
@@ -173,9 +174,16 @@
         reagents:
         - ReagentId: Coffee
           Quantity: 20
-        maxVol: 20
   - type: Sprite
     sprite: Objects/Consumable/Drinks/hot_coffee.rsi
+    layers:
+      - state: icon-0
+      - map: ["enum.SolutionContainerLayers.Fill"]
+        state: icon-4
+  - type: Appearance
+  - type: SolutionContainerVisuals
+    maxFillLevels: 4
+    fillBaseName: icon-
   - type: TrashOnEmpty
     solution: drink
 
@@ -191,10 +199,16 @@
         reagents:
         - ReagentId: Tea
           Quantity: 20
-        maxVol: 20
   - type: Sprite
     sprite: Objects/Consumable/Drinks/teacup.rsi
-    state: icon-1
+    layers:
+      - state: icon-0
+      - map: ["enum.SolutionContainerLayers.Fill"]
+        state: icon-4
+  - type: Appearance
+  - type: SolutionContainerVisuals
+    maxFillLevels: 4
+    fillBaseName: icon-
   - type: TrashOnEmpty
     solution: drink
 
@@ -210,7 +224,6 @@
         reagents:
         - ReagentId: Water
           Quantity: 20
-        maxVol: 20
   - type: Sprite
     sprite: Objects/Consumable/Drinks/lean.rsi
     state: icon
@@ -228,7 +241,6 @@
   - type: SolutionContainerManager
     solutions:
       drink:
-        maxVol: 20
         reagents:
         - ReagentId: Water
           Quantity: 20

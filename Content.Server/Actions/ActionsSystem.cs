@@ -16,38 +16,11 @@ namespace Content.Server.Actions
         public override void Initialize()
         {
             base.Initialize();
-
-            SubscribeLocalEvent<ActionsComponent, PlayerAttachedEvent>(OnPlayerAttached);
-            SubscribeLocalEvent<ActionsComponent, ComponentStartup>(OnStartup);
-            SubscribeLocalEvent<ActionsComponent, ComponentShutdown>(OnShutdown);
-            SubscribeLocalEvent<ActionsComponent, MetaFlagRemoveAttemptEvent>(OnMetaFlagRemoval);
         }
 
-        private void OnMetaFlagRemoval(EntityUid uid, ActionsComponent component, ref MetaFlagRemoveAttemptEvent args)
+        protected override bool PerformBasicActions(EntityUid user, ActionType action, bool predicted)
         {
-            if (component.LifeStage == ComponentLifeStage.Running)
-                args.ToRemove &= ~MetaDataFlags.EntitySpecific;
-        }
-
-        private void OnStartup(EntityUid uid, ActionsComponent component, ComponentStartup args)
-        {
-            _metaSystem.AddFlag(uid, MetaDataFlags.EntitySpecific);
-        }
-
-        private void OnShutdown(EntityUid uid, ActionsComponent component, ComponentShutdown args)
-        {
-            _metaSystem.RemoveFlag(uid, MetaDataFlags.EntitySpecific);
-        }
-
-        private void OnPlayerAttached(EntityUid uid, ActionsComponent component, PlayerAttachedEvent args)
-        {
-            // need to send state to new player.
-            Dirty(component);
-        }
-
-        protected override bool PerformBasicActions(EntityUid user, ActionType action)
-        {
-            var result = base.PerformBasicActions(user, action);
+            var result = base.PerformBasicActions(user, action, predicted);
 
             if (!string.IsNullOrWhiteSpace(action.Speech))
             {

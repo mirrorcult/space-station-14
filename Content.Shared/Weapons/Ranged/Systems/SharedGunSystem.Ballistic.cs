@@ -1,5 +1,6 @@
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
+using Content.Shared.Interaction.Events;
 using Content.Shared.Verbs;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
@@ -25,10 +26,10 @@ public abstract partial class SharedGunSystem
         SubscribeLocalEvent<BallisticAmmoProviderComponent, ExaminedEvent>(OnBallisticExamine);
         SubscribeLocalEvent<BallisticAmmoProviderComponent, GetVerbsEvent<Verb>>(OnBallisticVerb);
         SubscribeLocalEvent<BallisticAmmoProviderComponent, InteractUsingEvent>(OnBallisticInteractUsing);
-        SubscribeLocalEvent<BallisticAmmoProviderComponent, ActivateInWorldEvent>(OnBallisticActivate);
+        SubscribeLocalEvent<BallisticAmmoProviderComponent, UseInHandEvent>(OnBallisticUse);
     }
 
-    private void OnBallisticActivate(EntityUid uid, BallisticAmmoProviderComponent component, ActivateInWorldEvent args)
+    private void OnBallisticUse(EntityUid uid, BallisticAmmoProviderComponent component, UseInHandEvent args)
     {
         ManualCycle(component, Transform(uid).MapPosition, args.User);
         args.Handled = true;
@@ -43,7 +44,7 @@ public abstract partial class SharedGunSystem
         component.Entities.Add(args.Used);
         component.Container.Insert(args.Used);
         // Not predicted so
-        PlaySound(uid, component.SoundInsert?.GetSound(Random, ProtoManager), args.User);
+        Audio.PlayPredicted(component.SoundInsert, uid, args.User);
         args.Handled = true;
         UpdateBallisticAppearance(component);
         Dirty(component);
@@ -63,6 +64,9 @@ public abstract partial class SharedGunSystem
 
     private void OnBallisticExamine(EntityUid uid, BallisticAmmoProviderComponent component, ExaminedEvent args)
     {
+        if (!args.IsInDetailsRange)
+            return;
+
         args.PushMarkup(Loc.GetString("gun-magazine-examine", ("color", AmmoExamineColor), ("count", GetBallisticShots(component))));
     }
 
@@ -76,10 +80,7 @@ public abstract partial class SharedGunSystem
         }
 
         Dirty(component);
-        var sound = component.SoundRack?.GetSound(Random, ProtoManager);
-
-        if (sound != null)
-            PlaySound(component.Owner, sound, user);
+        Audio.PlayPredicted(component.SoundRack, component.Owner, user);
 
         var shots = GetBallisticShots(component);
         component.Cycled = true;
@@ -204,9 +205,11 @@ public abstract partial class SharedGunSystem
 
     private void UpdateBallisticAppearance(BallisticAmmoProviderComponent component)
     {
-        if (!Timing.IsFirstTimePredicted || !TryComp<AppearanceComponent>(component.Owner, out var appearance)) return;
-        appearance.SetData(AmmoVisuals.AmmoCount, GetBallisticShots(component));
-        appearance.SetData(AmmoVisuals.AmmoMax, component.Capacity);
+        if (!Timing.IsFirstTimePredicted || !TryComp<AppearanceComponent>(component.Owner, out var appearance))
+            return;
+
+        Appearance.SetData(appearance.Owner, AmmoVisuals.AmmoCount, GetBallisticShots(component), appearance);
+        Appearance.SetData(appearance.Owner, AmmoVisuals.AmmoMax, component.Capacity, appearance);
     }
 
     [Serializable, NetSerializable]

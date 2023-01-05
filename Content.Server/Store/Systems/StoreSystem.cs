@@ -8,6 +8,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using System.Linq;
 using Content.Server.UserInterface;
+using Content.Shared.Stacks;
 
 namespace Content.Server.Store.Systems;
 
@@ -54,6 +55,7 @@ public sealed partial class StoreSystem : EntitySystem
         //if you somehow are inserting cash before the store initializes.
         if (!store.Opened)
         {
+            RefreshAllListings(store);
             InitializeFromPreset(store.Preset, store);
             store.Opened = true;
         }
@@ -63,7 +65,7 @@ public sealed partial class StoreSystem : EntitySystem
         if (args.Handled)
         {
             var msg = Loc.GetString("store-currency-inserted", ("used", args.Used), ("target", args.Target));
-            _popup.PopupEntity(msg, args.Target.Value, Filter.Pvs(args.Target.Value));
+            _popup.PopupEntity(msg, args.Target.Value);
             QueueDel(args.Used);
         }
     }
@@ -141,14 +143,14 @@ public sealed partial class StoreSystem : EntitySystem
     /// <param name="component">The store being initialized</param>
     public void InitializeFromPreset(StorePresetPrototype preset, StoreComponent component)
     {
-        RefreshAllListings(component);
         component.Preset = preset.ID;
         component.CurrencyWhitelist.UnionWith(preset.CurrencyWhitelist);
         component.Categories.UnionWith(preset.Categories);
         if (component.Balance == new Dictionary<string, FixedPoint2>() && preset.InitialBalance != null) //if we don't have a value stored, use the preset
             TryAddCurrency(preset.InitialBalance, component);
 
-        var ui = component.Owner.GetUIOrNull(StoreUiKey.Key);
-        ui?.SetState(new StoreInitializeState(preset.StoreName));
+        var ui = _ui.GetUiOrNull(component.Owner, StoreUiKey.Key);
+        if (ui != null)
+            _ui.SetUiState(ui, new StoreInitializeState(preset.StoreName));
     }
 }

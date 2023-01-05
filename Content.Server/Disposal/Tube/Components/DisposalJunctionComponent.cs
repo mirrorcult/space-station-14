@@ -18,7 +18,6 @@ namespace Content.Server.Disposal.Tube.Components
         /// <summary>
         ///     The angles to connect to.
         /// </summary>
-        [ViewVariables]
         [DataField("degrees")]
         private List<Angle> _degrees = new();
 

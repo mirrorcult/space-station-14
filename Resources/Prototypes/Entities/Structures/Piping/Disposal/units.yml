@@ -11,6 +11,7 @@
   - type: Sprite
     netsync: false
     sprite: Structures/Piping/disposal.rsi
+    snapCardinals: true
     layers:
     - state: condisposal
       map: ["enum.DisposalUnitVisualLayers.Base"]
@@ -25,7 +26,7 @@
     - shape:
         !type:PhysShapeAabb
         bounds: "-0.25,-0.4,0.25,0.4"
-      mass: 30
+      density: 75
       mask:
       - MachineMask
       layer:
@@ -73,6 +74,8 @@
   - type: ContainerContainer
     containers:
       DisposalUnit: !type:Container
+  - type: StaticPrice
+    price: 100
 
 - type: entity
   id: DisposalUnit
@@ -120,8 +123,6 @@
     transmitFrequencyId: MailingUnit
   - type: WiredNetworkConnection
   - type: Configuration
-    config:
-      tag:
   - type: Appearance
     visuals:
       - type: DisposalUnitVisualizer

@@ -6,6 +6,7 @@ using Content.Shared.Inventory;
 using Content.Shared.Mousetrap;
 using Content.Shared.StepTrigger;
 using Content.Shared.StepTrigger.Systems;
+using Robust.Shared.Physics.Components;
 using Robust.Shared.Player;
 
 namespace Content.Server.Mousetrap;
@@ -29,7 +30,7 @@ public sealed class MousetrapSystem : EntitySystem
             ? Loc.GetString("mousetrap-on-activate")
             : Loc.GetString("mousetrap-on-deactivate"),
             uid,
-            Filter.Entities(args.User));
+            args.User);
 
         UpdateVisuals(uid);
     }

@@ -1,5 +1,6 @@
 using Content.Client.Items;
 using Content.Client.Tools.Components;
+using Content.Client.Tools.UI;
 using Content.Shared.Tools;
 using Content.Shared.Tools.Components;
 using Robust.Client.GameObjects;
@@ -14,11 +15,12 @@ namespace Content.Client.Tools
             base.Initialize();
 
             SubscribeLocalEvent<WelderComponent, ComponentHandleState>(OnWelderHandleState);
+            SubscribeLocalEvent<WelderComponent, ItemStatusCollectMessage>(OnWelderGetStatusMessage);
             SubscribeLocalEvent<MultipleToolComponent, ItemStatusCollectMessage>(OnGetStatusMessage);
         }
 
         public override void SetMultipleTool(EntityUid uid,
-        SharedMultipleToolComponent? multiple = null,
+        MultipleToolComponent? multiple = null,
         ToolComponent? tool = null,
         bool playSound = false,
         EntityUid? user = null)
@@ -27,7 +29,7 @@ namespace Content.Client.Tools
                 return;
 
             base.SetMultipleTool(uid, multiple, tool, playSound, user);
-            ((MultipleToolComponent)multiple).UiUpdateNeeded = true;
+            multiple.UiUpdateNeeded = true;
 
             // TODO replace this with appearance + visualizer
             // in order to convert this to a specifier, the manner in which the sprite is specified in yaml needs to be updated.
@@ -43,6 +45,11 @@ namespace Content.Client.Tools
         private void OnGetStatusMessage(EntityUid uid, MultipleToolComponent welder, ItemStatusCollectMessage args)
         {
             args.Controls.Add(new MultipleToolStatusControl(welder));
+        }
+
+        private void OnWelderGetStatusMessage(EntityUid uid, WelderComponent component, ItemStatusCollectMessage args)
+        {
+            args.Controls.Add(new WelderStatusControl(component));
         }
 
         private void OnWelderHandleState(EntityUid uid, WelderComponent welder, ref ComponentHandleState args)

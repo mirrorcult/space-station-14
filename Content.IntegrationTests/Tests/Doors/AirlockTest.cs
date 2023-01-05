@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Components;
 
 namespace Content.IntegrationTests.Tests.Doors
 {
@@ -53,14 +54,13 @@ namespace Content.IntegrationTests.Tests.Doors
 
             var mapManager = server.ResolveDependency<IMapManager>();
             var entityManager = server.ResolveDependency<IEntityManager>();
+            var doors = entityManager.EntitySysManager.GetEntitySystem<DoorSystem>();
 
             EntityUid airlock = default;
             DoorComponent doorComponent = null;
 
             await server.WaitAssertion(() =>
             {
-                mapManager.CreateNewMapEntity(MapId.Nullspace);
-
                 airlock = entityManager.SpawnEntity("AirlockDummy", MapCoordinates.Nullspace);
 
                 Assert.True(entityManager.TryGetComponent(airlock, out doorComponent));
@@ -71,7 +71,7 @@ namespace Content.IntegrationTests.Tests.Doors
 
             await server.WaitAssertion(() =>
             {
-                EntitySystem.Get<DoorSystem>().StartOpening(airlock);
+                doors.StartOpening(airlock);
                 Assert.That(doorComponent.State, Is.EqualTo(DoorState.Opening));
             });
 
@@ -83,7 +83,7 @@ namespace Content.IntegrationTests.Tests.Doors
 
             await server.WaitAssertion(() =>
             {
-                EntitySystem.Get<DoorSystem>().TryClose((EntityUid) airlock);
+                doors.TryClose(airlock);
                 Assert.That(doorComponent.State, Is.EqualTo(DoorState.Closing));
             });
 
@@ -115,7 +115,7 @@ namespace Content.IntegrationTests.Tests.Doors
             var mapManager = server.ResolveDependency<IMapManager>();
             var entityManager = server.ResolveDependency<IEntityManager>();
 
-            IPhysBody physBody = null;
+            PhysicsComponent physBody = null;
             EntityUid physicsDummy = default;
             EntityUid airlock = default;
             DoorComponent doorComponent = null;
@@ -146,7 +146,7 @@ namespace Content.IntegrationTests.Tests.Doors
             for (var i = 0; i < 240; i += 10)
             {
                 // Keep the airlock awake so they collide
-                await server.WaitPost(() => entityManager.GetComponent<IPhysBody>(airlock).WakeBody());
+                await server.WaitPost(() => entityManager.GetComponent<PhysicsComponent>(airlock).WakeBody());
 
                 await server.WaitRunTicks(10);
                 await server.WaitIdleAsync();

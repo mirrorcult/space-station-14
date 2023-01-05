@@ -1,10 +1,10 @@
 using Content.Server.Atmos;
 using Content.Server.Disposal.Tube.Components;
-using Content.Shared.Atmos;
 using Content.Shared.Body.Components;
 using Content.Shared.Item;
 using Robust.Shared.Containers;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Components;
 
 namespace Content.Server.Disposal.Unit.Components
 {
@@ -55,7 +55,6 @@ namespace Content.Server.Disposal.Unit.Components
         [ViewVariables]
         public HashSet<string> Tags { get; set; } = new();
 
-        [ViewVariables]
         [DataField("air")]
         public GasMixture Air { get; set; } = new (70);
 
@@ -74,7 +73,7 @@ namespace Content.Server.Disposal.Unit.Components
             }
 
             return _entMan.HasComponent<ItemComponent>(entity) ||
-                   _entMan.HasComponent<SharedBodyComponent>(entity);
+                   _entMan.HasComponent<BodyComponent>(entity);
         }
 
         public bool TryInsert(EntityUid entity)
@@ -84,7 +83,7 @@ namespace Content.Server.Disposal.Unit.Components
                 return false;
             }
 
-            if (_entMan.TryGetComponent(entity, out IPhysBody? physics))
+            if (_entMan.TryGetComponent(entity, out PhysicsComponent? physics))
             {
                 physics.CanCollide = false;
             }
