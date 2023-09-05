@@ -3,6 +3,7 @@ using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Inventory.Events;
+using Content.Shared.Throwing;
 using Robust.Shared.Network;
 
 namespace Content.Shared.Hands;
@@ -18,6 +19,16 @@ public abstract class SharedHandVirtualItemSystem : EntitySystem
 
         SubscribeLocalEvent<HandVirtualItemComponent, BeingEquippedAttemptEvent>(OnBeingEquippedAttempt);
         SubscribeLocalEvent<HandVirtualItemComponent, BeforeRangedInteractEvent>(HandleBeforeInteract);
+        SubscribeLocalEvent<HandVirtualItemComponent, BeforeThrownEvent>(OnBeforeThrow);
+    }
+
+    private void OnBeforeThrow(EntityUid uid, HandVirtualItemComponent component, BeforeThrownEvent args)
+    {
+        // Change the entity being thrown if we throw a virtual blocker.
+        if (!Deleted(component.BlockingEntity))
+        {
+            args.ItemUid = component.BlockingEntity;
+        }
     }
 
     public bool TrySpawnVirtualItemInHand(EntityUid blockingEnt, EntityUid user)

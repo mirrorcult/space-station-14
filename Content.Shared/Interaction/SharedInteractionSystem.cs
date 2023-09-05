@@ -1005,8 +1005,7 @@ namespace Content.Shared.Interaction
 
         #region Throw
         /// <summary>
-        ///     Calls Thrown on all components that implement the IThrown interface
-        ///     on an entity that has been thrown.
+        ///     Raises the <see cref="ThrownEvent"/> on the thrown item.
         /// </summary>
         public void ThrownInteraction(EntityUid user, EntityUid thrown)
         {
