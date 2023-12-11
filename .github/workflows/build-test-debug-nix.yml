@@ -1,0 +1,44 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [ master, staging, trying ]
+  merge_group:
+  pull_request:
+    types: [ opened, reopened, synchronize, ready_for_review ]
+    branches: [ master ]
+jobs:
+  build:
+    if: github.actor != 'PJBot' && github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout Master
+      uses: actions/checkout@v3.6.0
+
+    - name: Setup Submodule
+      run: |
+        git submodule update --init --recursive
+
+    - name: Pull engine updates
+      uses: space-wizards/submodule-dependency@v0.1.5
+
+    - name: Update Engine Submodules
+      run: |
+        cd RobustToolbox/
+        git submodule update --init --recursive
+
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@main
+
+    - name: Start Nix Cache
+      uses: DeterminateSystems/magic-nix-cache-action@main
+
+    - name: Convert Nuget Deps to Nix
+
+    - name: Build & Test Derivation
+      run: nix flake check
