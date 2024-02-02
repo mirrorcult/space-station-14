@@ -1,3 +1,4 @@
+using System.Numerics;
 using Content.Shared.Chemistry;
 using Content.Shared.Containers.ItemSlots;
 using JetBrains.Annotations;
@@ -36,7 +37,7 @@ namespace Content.Client.Chemistry.UI
                 Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName,
             };
 
-            _window.OpenCentered();
+            _window.OpenCenteredRight();
             _window.OnClose += Close;
 
             // Setup static button actions.
